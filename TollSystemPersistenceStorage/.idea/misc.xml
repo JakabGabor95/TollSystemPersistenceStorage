@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/../../TollSystemApp/TollSystemApp/pom.xml" />
+        <option value="$PROJECT_DIR$/../../TollSystemStarter/TollSystemStarter/pom.xml" />
+        <option value="$PROJECT_DIR$/../../TollSystemConsoleUi/TollSystemConsoleUi/pom.xml" />
+        <option value="$PROJECT_DIR$/../../TollSystemApp/TollSystemBusinessRules/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../vehicle-register/vehicle-register-app/vehicle-register-app/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../vehicle-register/vehicle-register-persistence-storage/vehicle-register-persistence-storage/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../vehicle-register/vehicle-register-starter/vehicle-register-starter/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../vehicle-register/vehicle-register-ui/vehicle-register-ui/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="temurin-17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
