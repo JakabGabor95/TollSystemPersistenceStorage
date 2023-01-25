@@ -6,12 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="vehicle-register-ui" />
         <module name="TollSystemStarter" />
         <module name="TollSystemConsoleUi" />
         <module name="TollSystemBusinessRules" />
         <module name="vehicle-register-persistence-storage" />
         <module name="vehicle-register-starter" />
-        <module name="vehcile-register-ui" />
         <module name="TollSystemPersistenceStorage" />
         <module name="vehicle-register-app" />
       </profile>

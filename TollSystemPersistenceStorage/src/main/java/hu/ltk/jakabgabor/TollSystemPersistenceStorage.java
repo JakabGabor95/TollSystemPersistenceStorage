@@ -3,56 +3,64 @@ import hu.ltk.jakabgabor.entity.MotorwayVignette;
 import hu.ltk.jakabgabor.storage.MotorwayVignetteStorageInterface;
 import hu.ltk.jakabgabor.validator.TollSystemValidator;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class TollSystemPersistenceStorage implements MotorwayVignetteStorageInterface {
     private TollSystemValidator tollSystemValidator = new TollSystemValidator();
-    public static void connect() {
-        Connection conn = null;
+    Connection connection;
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/bootcamp";
+    public static final String USER = "root";
+    public static final String PASSWORD = "bootcamp";
+
+    public TollSystemPersistenceStorage() {
         try {
-            // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/db/motorwayVignette.db";
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
-
-            System.out.println("Connection to SQLite has been established.");
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
+            this.connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
-    public TollSystemPersistenceStorage() {}
-
-    private List<MotorwayVignette> motorwayVignetteList = new ArrayList<>(List.of(new MotorwayVignette("asd-123",
-            "d1", "yearly", 1000,
-            new Date(2023 - 1900, 0, 1),new Date(2023 - 1900, 12, 1),
-            new Date(2021 - 1900, 0, 1)), new MotorwayVignette("asd-123",
-            "B2", " monthly", 1000,
-            new Date(2021 - 1900, 0, 1), new Date(2021 - 1900, 0, 1),
-            new Date(2021 - 1900, 0, 1))));
-
     @Override
     public List<MotorwayVignette> findByRegistrationNumber(String registrationNumber) {
-        connect();
         tollSystemValidator.checkRegistrationNumberIsNull(registrationNumber);
-        return motorwayVignetteList.stream()
-                .filter(motorwayVignette -> motorwayVignette.getRegistrationNumber()
-                        .equals(registrationNumber))
-                .collect(Collectors.toList());
+        return findMotorwayVignettesByRegistrationNumber(registrationNumber);
+    }
+
+   public List<MotorwayVignette> findMotorwayVignettesByRegistrationNumber(String registrationNumber) {
+        List<MotorwayVignette> motorwayVignettes = new ArrayList<>();
+        String sql = "SELECT * FROM motorway_vignette WHERE registrationNumber = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, registrationNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                motorwayVignettes.add(new MotorwayVignette(
+                        resultSet.getString("registrationNumber"),
+                        resultSet.getString("vehicleCategory"),
+                        resultSet.getString("motorwayVignetteType"),
+                        resultSet.getInt("price"),
+                        setNewDate(resultSet.getDate("validFrom")),
+                        setNewDate(resultSet.getDate("validTo")),
+                        setNewDate(resultSet.getDate("dateOfPurchase"))
+                        ));
+            }
+            return  motorwayVignettes;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    private Date setNewDate(Date date) {
+        int year = date.getYear();
+        int moth = date.getMonth();
+        int day = date.getDay();
+
+        return new Date(year,moth,day);
     }
 }

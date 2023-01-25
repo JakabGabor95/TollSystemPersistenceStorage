@@ -1,1 +1,3 @@
+hu/ltk/jakabgabor/exception/InvalidRegistrationNumberException.class
+hu/ltk/jakabgabor/validator/TollSystemValidator.class
 hu/ltk/jakabgabor/TollSystemPersistenceStorage.class
